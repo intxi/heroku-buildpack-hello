@@ -27,7 +27,7 @@ function mktmpdir() {
 
 function package_download() {
   engine="$1"
-  location="$3"
+  location="$2"
 
   mkdir -p $location
   package="http://${S3_BUCKET}.s3.amazonaws.com/${engine}.tgz"
