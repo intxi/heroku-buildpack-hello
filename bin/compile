@@ -31,7 +31,7 @@ function package_download() {
 
   mkdir -p $location
 
-  echo "-----> Curling:"+ "http://${S3_BUCKET}.s3.amazonaws.com/${engine}.tgz"
+  echo "-----> Curling: http://${S3_BUCKET}.s3.amazonaws.com/${engine}.tgz"
   package="http://${S3_BUCKET}.s3.amazonaws.com/${engine}.tgz"
   curl $package -s -o - | tar xzf - -C $location
 }
@@ -45,7 +45,7 @@ VENDORED_PYTHON="$(mktmpdir python)"
 # download and unpack packages
 echo "-----> Fetching Indexd binaries"
 echo "-----> Fetching Automake"
-package_download "automake-1.11.5" "${VENDORED_AUTOMAKE}"
+#package_download "automake-1.11.5" "${VENDORED_AUTOMAKE}"
 echo "-----> Fetching Libtools"
 package_download "libtool-2.4.2" "${VENDORED_LIBTOOL}"
 echo "-----> Fetching CMake"
