@@ -1,10 +1,53 @@
 #!/bin/sh
 
-echo "----->  Echoiing"
+echo "----->  Starting Indexd Custom Buildpack Compile"
 
 # if hello.txt is empty, abort the build
-if [ ! -s $1/hello.txt ]; then
-  echo "Its OK...Compile here?"
+if [ ! -s $1/Rakefile ]; then
+  echo "Must have RAKEFILE!"
 fi
+
+function mktmpdir() {
+  dir=$(mktemp -t indexd-$1-XXXX)
+  rm -rf $dir
+  mkdir -p $dir
+  echo $dir
+}
+
+function package_download() {
+  engine="$1"
+  location="$3"
+
+  mkdir -p $location
+  package="http://${S3_BUCKET}.s3.amazonaws.com/${engine}.tgz"
+  curl $package -s -o - | tar xzf - -C $location
+}
+
+BUILD_DIR=$1
+CACHE_DIR=$2
+LP_DIR=`cd $(dirname $0); cd ..; pwd`
+
+S3_BUCKET="heroku.build.intersect.com"
+
+# vendor directories
+VENDORED_AUTOMAKE="$(mktmpdir automake)"
+VENDORED_LIBTOOL="$(mktmpdir libtool)"
+VENDORED_CMAKE="$(mktmpdir cmake)"
+VENDORED_PYTHON="$(mktmpdir python)"
+
+# download and unpack packages
+echo "-----> Fetching Indexd binaries"
+package_download "automake-1.11.5" "${VENDORED_AUTOMAKE}"
+package_download "libtool-2.4.2" "${VENDORED_LIBTOOL}"
+package_download "cmake-2.8.8" "${VENDORED_CMAKE}"
+package_download "Python-2.7.3" "${VENDORED_PYTHON}"
+
+# vendor node into the slug
+PATH="$BUILD_DIR/bin:$PATH"
+echo "-----> Vendoring node into slug"
+
+mkdir -p "$BUILD_DIR/bin"
+cp "$VENDORED_NODE/bin/node" "$BUILD_DIR/bin/node"
+
 
 echo "Did stuff"
