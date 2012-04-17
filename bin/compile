@@ -2,11 +2,6 @@
 
 echo "----->  Starting Indexd Custom Buildpack Compile"
 
-# if hello.txt is empty, abort the build
-if [ ! -s $1/Rakefile ]; then
-  echo "Must have RAKEFILE!"
-fi
-
 function mktmpdir() {
   dir=$(mktemp -t indexd-$1-XXXX)
   rm -rf $dir
