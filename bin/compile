@@ -1,16 +1,11 @@
 #!/bin/sh
 
-indent() {
-  sed -u 's/^/       /'
-}
-
-echo "-----> Found a hello.txt"
+echo "----->  Echoiing"
 
 # if hello.txt is empty, abort the build
 if [ ! -s $1/hello.txt ]; then
-  echo "hello.txt was empty" | indent
+  echo "hello.txt was empty"
   exit 1
 fi
 
-# replace hello with goodbye in a new file
-cat $1/hello.txt | sed -e "s/[Hh]ello/Goodbye/g" > $1/goodbye.txt
+echo "Did stuff"
