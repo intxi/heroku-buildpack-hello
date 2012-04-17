@@ -4,8 +4,7 @@ echo "----->  Echoiing"
 
 # if hello.txt is empty, abort the build
 if [ ! -s $1/hello.txt ]; then
-  echo "hello.txt was empty"
-  exit 1
+  echo "Its OK...Compile here?"
 fi
 
 echo "Did stuff"
